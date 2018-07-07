@@ -14,5 +14,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/srujankalvacherla/SKAlert.git", :tag => "1.0.0" }
   s.source_files  = "SKAlert", "SKAlert/**/*.{h,m,swift}"
   s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4' }
+  s.swift_version = "4.0"
 
 end
