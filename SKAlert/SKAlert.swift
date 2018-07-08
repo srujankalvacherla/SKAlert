@@ -8,8 +8,8 @@
 
 import UIKit
 
-public typealias OkCompletionHandler = (_ success:Bool) -> Void
-public typealias CancelCompletionHandler = (_ failure : Bool) -> Void
+public typealias OkCompletionHandler = () -> Void
+public typealias CancelCompletionHandler = () -> Void
 
 
 public class SKAlert: UIViewController {
@@ -67,7 +67,7 @@ public class SKAlert: UIViewController {
         cancelButton = nil
         self.animateToSuperView()
     }
-    public func showAlertWithOkAction(_ title: String, subTitle: String, ok: @escaping OkCompletionHandler){
+    public func showAlertWithOkAction(_ title: String, subTitle: String, okCompletionHandler: @escaping OkCompletionHandler){
         let window: UIWindow = UIApplication.shared.keyWindow!
         window.addSubview(view)
         window.bringSubview(toFront: view)
@@ -79,10 +79,10 @@ public class SKAlert: UIViewController {
         strongSelf?.cancelButton.isHidden = true
         strongSelf?.okButton.addTarget(self, action: #selector(buttonActon(_:)), for: .touchUpInside)
         strongSelf?.okButton.tag = 1
-        self.okCompletion = ok
+        self.okCompletion = okCompletionHandler
         self.animateToSuperView()
     }
-    public func showAlertWithTwoButtons(_ title: String, subTitle: String, ok: @escaping OkCompletionHandler, cancel: @escaping CancelCompletionHandler){
+    public func showAlertWithTwoButtons(_ title: String, subTitle: String, okCompletionHandler : @escaping OkCompletionHandler, cancelCompletionHandler : @escaping CancelCompletionHandler){
         let window: UIWindow = UIApplication.shared.keyWindow!
         window.addSubview(view)
         window.bringSubview(toFront: view)
@@ -95,22 +95,43 @@ public class SKAlert: UIViewController {
         strongSelf?.okButton.tag = 1
         strongSelf?.cancelButton.tag = 2
         strongSelf?.cancelButton.addTarget(self, action: #selector(buttonActon(_:)), for: .touchUpInside)
-        self.okCompletion = ok
-        strongSelf?.cancelCompletion = cancel
+        strongSelf?.okCompletion = okCompletionHandler
+        strongSelf?.cancelCompletion = cancelCompletionHandler
         self.animateToSuperView()
     }
-    
+    public func showAlertWithCustomButtons(_ title: String, subTitle: String, leftBtnTitle: String, leftBtnColor: UIColor, rightBtnTitle: String, rightBtnColor: UIColor,  leftCompletionHandler: @escaping CancelCompletionHandler , _ rightCompletionHandler: @escaping OkCompletionHandler){
+        let window: UIWindow = UIApplication.shared.keyWindow!
+        window.addSubview(view)
+        window.bringSubview(toFront: view)
+        view.frame = window.bounds
+        self.setUpContentView()
+        view.addSubview(contentView)
+        strongSelf?.headerTitle.text = title
+        strongSelf?.subTitle.text = subTitle
+        strongSelf?.cancelButton.setTitle(leftBtnTitle, for: .normal)
+        strongSelf?.cancelButton.backgroundColor = leftBtnColor
+        strongSelf?.okButton.setTitle(rightBtnTitle, for: .normal)
+        strongSelf?.okButton.backgroundColor = rightBtnColor
+        
+        strongSelf?.okButton.addTarget(self, action: #selector(buttonActon(_:)), for: .touchUpInside)
+        strongSelf?.okButton.tag = 1
+        strongSelf?.cancelButton.tag = 2
+        strongSelf?.cancelButton.addTarget(self, action: #selector(buttonActon(_:)), for: .touchUpInside)
+        strongSelf?.okCompletion = rightCompletionHandler
+        strongSelf?.cancelCompletion = leftCompletionHandler
+        self.animateToSuperView()
+    }
     // MARK: - Animate View
     @objc func buttonActon(_ sender: UIButton) {
         switch sender.tag {
         case OkayButtonTag:
             if self.okCompletion != nil{
-                self.okCompletion!(true)
+                self.okCompletion!()
             }
             break
         case CancelButtonTag:
             if self.cancelCompletion != nil{
-                self.cancelCompletion!(true)
+                self.cancelCompletion!()
             }
             break
         default:
@@ -124,14 +145,14 @@ public class SKAlert: UIViewController {
         UIView.animate(
             withDuration: 0.15,
             animations: {
-            self.subView.transform = CGAffineTransform(scaleX: 0.25, y: 0.5)
+            self.subView.transform = CGAffineTransform(scaleX: 0.20, y: 0.5)
         }) { _ in
             self.view.removeFromSuperview()
         }
     }
     fileprivate func animateToSuperView(){
-        self.subView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5 )
-        UIView.animate(withDuration: 0.25, animations: {
+        self.subView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25 )
+        UIView.animate(withDuration: 0.20, animations: {
             self.subView.transform = CGAffineTransform.identity
             
         })
