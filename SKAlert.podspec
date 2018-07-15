@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.author       	= { "Srujan K" => "srujan.kal@gmail.com" }
   s.platform     	= :ios
   s.platform     	= :ios, "9.0"
-  s.source       	= { :git => "https://github.com/srujankalvacherla/SKAlert.git", :tag => "1.1.1" }
+  s.source       	= { :git => "https://github.com/srujankalvacherla/SKAlert.git", :tag => "V1.1.2" }
   s.source_files = "SKAlert", "SKAlert/**/*.{h,m,swift}"
   s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4' }
   s.swift_version 	= "4.0"
