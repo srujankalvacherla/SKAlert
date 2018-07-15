@@ -2,6 +2,9 @@
 
 Alerts in iOS might be painful when it comes to writing multiple lines of code and has reusabilty issues. For that matter we have created `SKAlert` for simpler usage of alerts for iOS.
 
+![](https://user-images.githubusercontent.com/40866243/42735853-4e0f32f2-8879-11e8-8fb4-1ebf14987998.gif)
+
+
 ## Requirements
 
 `SKAlert` works for iOS 9.0+ and requires ARC to buid.
@@ -13,8 +16,7 @@ Alerts in iOS might be painful when it comes to writing multiple lines of code a
 
 ### Static library
 
-Follow this article at[Medium](https://medium.com/@nishantnitb/writing-custom-universal-framework-in-xcode-9-and-ios-11-7a63a2ce024a)
-Before continuing with the above article, delete Example project.
+Follow this article at [Medium](https://medium.com/@nishantnitb/writing-custom-universal-framework-in-xcode-9-and-ios-11-7a63a2ce024a). But before continuing with the above article, delete Example project.
 
 ### Usage:
 
