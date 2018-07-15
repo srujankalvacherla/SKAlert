@@ -6,6 +6,13 @@
 //  Copyright © 2018 Srujan k. All rights reserved.
 //
 
+
+///  OPTIONS:
+/*
+1.  If you pass title/ subtitle empty to SKAlert fucntion then that field automatically hides.
+2. For alerts containig completion handlers. You will have to manaully set 'isTapToDismiss' variable to false, to disable tap anywhere to dismiss feature. */
+
+
 import UIKit
 import SKAlert
 
@@ -25,12 +32,14 @@ class SKAlertExampleViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 6
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            _  = SKAlert().showAlert("Plain Alert Header.", subTitle: "Plain Alert Sub Title")
+            let alert = SKAlert()
+            alert.isTapToDismiss = false
+            alert.showAlert("Plain Alert Header.", subTitle: "Plain Alert Sub Title")
             break
         case 1:
             _  = SKAlert().showAlertWithOkAction("Alert Header", subTitle: "Alert Sub Title", okCompletionHandler: {
@@ -50,6 +59,12 @@ class SKAlertExampleViewController: UITableViewController {
             }) {
                 print("right")
             }
+            break
+        case 4:
+            _  = SKAlert().showAlert("Plain Alert Header with no subtitle", subTitle: "")
+            break
+        case 5:
+            _  = SKAlert().showAlert("Header, Tap outside alert to dismiss..", subTitle: "")
             break
         default:
             break

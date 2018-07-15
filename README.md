@@ -1,6 +1,6 @@
 # SKAlert
 
-Alerts in iOS might be painful when it comes to writing multiple lines of code and reusabilty issues. For that matter we have created `SKAlert` for simpler usage of alerts for iOS.
+Alerts in iOS might be painful when it comes to writing multiple lines of code and has reusabilty issues. For that matter we have created `SKAlert` for simpler usage of alerts for iOS.
 
 ## Requirements
 
@@ -8,22 +8,44 @@ Alerts in iOS might be painful when it comes to writing multiple lines of code a
 
 ## Add SKAlert to your project
 
-### Cocoapods
-
+### Cocoapods ( Highly recommended way is to use cocoapods)
 `pod 'SKAlert'`
 
 ### Static library
 
-1. Download Repo
-2. Import SKAlert.framework into your project. Don't forget click "copy items if needed", and add to your targets.
-3. Add the same in Project Settings -> Embedded Binaries.
+Follow this article at[Medium](https://medium.com/@nishantnitb/writing-custom-universal-framework-in-xcode-9-and-ios-11-7a63a2ce024a)
+Before continuing with the above article, delete Example project.
 
 ### Usage:
 
 1. import SKAlert
 2. Start Using It, by below sytax
 ```swift
-_ = SKAlert().showAlert("Header.", subTitle: "Sub Title")
+_  = SKAlert().showAlert("Plain Alert Header.", subTitle: "Plain Alert Sub Title")
+```
+```swift
+_  = SKAlert().showAlertWithOkAction("Alert Header", subTitle: "Alert Sub Title", okCompletionHandler: {
+print("Ok Pressed")
+})
+```
+```swift
+_  = SKAlert().showAlertWithTwoButtons("Alert Header With Two Buttons", subTitle: "Alert Sub Title With Two Buttons", okCompletionHandler: {
+print("Ok Pressed")
+}, cancelCompletionHandler: {
+print("Canel Pressed")
+})
+```
+```swift
+_ = SKAlert().showAlertWithCustomButtons("Alert Header With Two Custom Buttons", subTitle: "Sub title with custom buttons with Handlers........!!!", leftBtnTitle: "Left", leftBtnColor: UIColor.black, rightBtnTitle: "right", rightBtnColor: UIColor.red, leftCompletionHandler: {
+print("left")
+}) {
+print("right")
+}
+```
+```swift
+let alert = SKAlert()
+alert.isTapToDismiss = false
+alert.showAlert("Plain Alert Header.", subTitle: "Plain Alert Sub Title")
 ```
 
 ### Noticeable mentions
@@ -34,6 +56,6 @@ _ = SKAlert().showAlert("Header.", subTitle: "Sub Title")
 
 This code is distributed under the terms and conditions of the [MIT license](LICENSE).
 
+## Change-log
 
-
-
+A brief summary of each release can be found in the [CHANGELOG](CHANGELOG.md). 

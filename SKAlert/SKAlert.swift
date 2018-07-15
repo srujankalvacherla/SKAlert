@@ -17,7 +17,6 @@ public class SKAlert: UIViewController {
     @IBOutlet private weak var subTitle: UILabel!
     @IBOutlet private weak var cancelButton: UIButton!
     @IBOutlet private weak var okButton: UIButton!
-    @IBOutlet private weak var mainView: UIView!
     @IBOutlet private weak var subView: UIView!
     
     var strongSelf: SKAlert?
@@ -28,21 +27,28 @@ public class SKAlert: UIViewController {
     let CancelButtonTag = 2
     var okCompletion: OkCompletionHandler? = nil
     var cancelCompletion: CancelCompletionHandler? =  nil
-
+    public var isTapToDismiss: Bool = true
+    
     public init() {
         super.init(nibName: nil, bundle: nil)
+        let bundle = Bundle(for: type(of: self))
+        let nib = UINib(nibName: self.nibname, bundle: bundle)
+        self.view = nib.instantiate(withOwner: self, options: nil).first as! UIView
+        self.view.frame = UIScreen.main.bounds
+
+        let window: UIWindow = UIApplication.shared.keyWindow!
+        window.addSubview(view)
+        window.bringSubview(toFront: view)
+        view.frame = window.bounds
+        self.setUpContentView()
         strongSelf = self
         self.setUp()
     }
     // MARK: - Set up
     func setUp() {
-        let bundle = Bundle(for: type(of: self))
-        let nib = UINib(nibName: self.nibname, bundle: bundle)
-        self.view = nib.instantiate(withOwner: self, options: nil).first as! UIView
-        self.view.frame = UIScreen.main.bounds
     }
     func setUpContentView() {
-        strongSelf?.contentView.layer.cornerRadius = 5.0
+        strongSelf?.contentView.layer.cornerRadius = 10.0
         strongSelf?.contentView.layer.borderWidth = 2
         self.okButton.layer.cornerRadius = SKCornerRadius
         self.cancelButton.layer.cornerRadius = SKCornerRadius
@@ -52,28 +58,37 @@ public class SKAlert: UIViewController {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    //MARK: - Alerts
     public func showAlert(_ title: String, subTitle: String){
-        let window: UIWindow = UIApplication.shared.keyWindow!
-        window.addSubview(view)
-        window.bringSubview(toFront: view)
-        view.frame = window.bounds
-        self.setUpContentView()
-//        view.addSubview(self.subView)
-        strongSelf?.headerTitle.text = title
-        strongSelf?.subTitle.text = subTitle
+        if title.count == 0{
+            strongSelf?.headerTitle.isHidden = true
+        }else{
+            strongSelf?.headerTitle.text = title
+        }
+        if subTitle.count == 0{
+            strongSelf?.subTitle.isHidden = true
+        }else{
+            strongSelf?.subTitle.text = subTitle
+        }
         strongSelf?.cancelButton.isHidden = true
         strongSelf?.okButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         okCompletion = nil
         cancelButton = nil
         self.animateToSuperView()
     }
-    public func showAlertWithOkAction(_ title: String, subTitle: String, okCompletionHandler: @escaping OkCompletionHandler){
-        let window: UIWindow = UIApplication.shared.keyWindow!
-        window.addSubview(view)
-        window.bringSubview(toFront: view)
-        view.frame = window.bounds
-        self.setUpContentView()
-        //        view.addSubview(self.subView)
+    public func showAlertWithOkAction(_ title: String, subTitle: String, okCompletionHandler: OkCompletionHandler?){
+        isTapToDismiss = false
+        if title.count == 0{
+            strongSelf?.headerTitle.isHidden = true
+        }else{
+            strongSelf?.headerTitle.text = title
+        }
+        if subTitle.count == 0{
+            strongSelf?.subTitle.isHidden = true
+        }else{
+            strongSelf?.subTitle.text = subTitle
+        }
+//        isTapToDismiss = false
         strongSelf?.headerTitle.text = title
         strongSelf?.subTitle.text = subTitle
         strongSelf?.cancelButton.isHidden = true
@@ -82,13 +97,19 @@ public class SKAlert: UIViewController {
         self.okCompletion = okCompletionHandler
         self.animateToSuperView()
     }
-    public func showAlertWithTwoButtons(_ title: String, subTitle: String, okCompletionHandler : @escaping OkCompletionHandler, cancelCompletionHandler : @escaping CancelCompletionHandler){
-        let window: UIWindow = UIApplication.shared.keyWindow!
-        window.addSubview(view)
-        window.bringSubview(toFront: view)
-        view.frame = window.bounds
-        self.setUpContentView()
-        view.addSubview(contentView)
+    public func showAlertWithTwoButtons(_ title: String, subTitle: String, okCompletionHandler : OkCompletionHandler?, cancelCompletionHandler : CancelCompletionHandler?){
+        isTapToDismiss = false
+        if title.count == 0{
+            strongSelf?.headerTitle.isHidden = true
+        }else{
+            strongSelf?.headerTitle.text = title
+        }
+        if subTitle.count == 0{
+            strongSelf?.subTitle.isHidden = true
+        }else{
+            strongSelf?.subTitle.text = subTitle
+        }
+//        isTapToDismiss = false
         strongSelf?.headerTitle.text = title
         strongSelf?.subTitle.text = subTitle
         strongSelf?.okButton.addTarget(self, action: #selector(buttonActon(_:)), for: .touchUpInside)
@@ -99,13 +120,19 @@ public class SKAlert: UIViewController {
         strongSelf?.cancelCompletion = cancelCompletionHandler
         self.animateToSuperView()
     }
-    public func showAlertWithCustomButtons(_ title: String, subTitle: String, leftBtnTitle: String, leftBtnColor: UIColor, rightBtnTitle: String, rightBtnColor: UIColor,  leftCompletionHandler: @escaping CancelCompletionHandler , _ rightCompletionHandler: @escaping OkCompletionHandler){
-        let window: UIWindow = UIApplication.shared.keyWindow!
-        window.addSubview(view)
-        window.bringSubview(toFront: view)
-        view.frame = window.bounds
-        self.setUpContentView()
-        view.addSubview(contentView)
+    public func showAlertWithCustomButtons(_ title: String, subTitle: String, leftBtnTitle: String, leftBtnColor: UIColor, rightBtnTitle: String, rightBtnColor: UIColor,  leftCompletionHandler: CancelCompletionHandler? , rightCompletionHandler: OkCompletionHandler? ){
+        isTapToDismiss = false
+        if title.count == 0{
+            strongSelf?.headerTitle.isHidden = true
+        }else{
+            strongSelf?.headerTitle.text = title
+        }
+        if subTitle.count == 0{
+            strongSelf?.subTitle.isHidden = true
+        }else{
+            strongSelf?.subTitle.text = subTitle
+        }
+//        isTapToDismiss = false
         strongSelf?.headerTitle.text = title
         strongSelf?.subTitle.text = subTitle
         strongSelf?.cancelButton.setTitle(leftBtnTitle, for: .normal)
@@ -141,21 +168,39 @@ public class SKAlert: UIViewController {
         
     }
     @objc func dismissView() {
-        
+        self.subView.transform = CGAffineTransform.identity
         UIView.animate(
             withDuration: 0.15,
             animations: {
-            self.subView.transform = CGAffineTransform(scaleX: 0.20, y: 0.5)
+            self.subView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                self.view.alpha = 0
+                self.subTitle.alpha = 0.0
+
         }) { _ in
             self.view.removeFromSuperview()
         }
     }
     fileprivate func animateToSuperView(){
-        self.subView.transform = CGAffineTransform(scaleX: 0.25, y: 0.25 )
-        UIView.animate(withDuration: 0.20, animations: {
+        self.subView.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+        UIView.animate(withDuration: 0.15, animations: {
             self.subView.transform = CGAffineTransform.identity
-            
-        })
+        }) { _ in
+            UIView.animate(withDuration: 0.1, animations: {
+                self.subView.transform = CGAffineTransform(scaleX: 0.85, y: 0.85 )
+            }) { _ in
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.subView.transform = CGAffineTransform.identity
+                })
+            }
+        }
     }
-
+    // MARK: - Touch Delegates
+    public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        if touch?.view != self.subView{
+            if isTapToDismiss{
+                strongSelf?.dismissView()
+            }
+        }
+    }
 }
