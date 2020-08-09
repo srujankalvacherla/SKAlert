@@ -3,7 +3,7 @@
 Pod::Spec.new do |s|
 
   s.name         	= "SKAlert"
-  s.version      	= "1.1.4"
+  s.version      	= "1.1.5"
   s.summary      	= "Simple alert with simple functionality"
   s.description  	= "Simple alert with simple functionality. A simple framework for asimpler alert, with simple usage."
   s.homepage     	= "https://github.com/srujankalvacherla/SKAlert/"
