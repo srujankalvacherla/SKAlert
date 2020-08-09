@@ -32,12 +32,12 @@ public class SKAlert: UIViewController {
         super.init(nibName: nil, bundle: nil)
         let bundle = Bundle(for: type(of: self))
         let nib = UINib(nibName: self.nibname, bundle: bundle)
-        self.view = nib.instantiate(withOwner: self, options: nil).first as! UIView
+        self.view = nib.instantiate(withOwner: self, options: nil).first as? UIView
         self.view.frame = UIScreen.main.bounds
 
         let window: UIWindow = UIApplication.shared.keyWindow!
         window.addSubview(view)
-        window.bringSubview(toFront: view)
+        window.bringSubviewToFront(view)
         view.frame = window.bounds
         self.setUpContentView()
         strongSelf = self

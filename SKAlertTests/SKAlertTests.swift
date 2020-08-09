@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import SKAlert
+
 
 class SKAlertTests: XCTestCase {
     
